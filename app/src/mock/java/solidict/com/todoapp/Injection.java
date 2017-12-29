@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 
 import solidict.com.todoapp.data.FakeTasksRemoteDataSource;
 import solidict.com.todoapp.data.source.TasksRepository;
+import solidict.com.todoapp.data.source.local.LocalTasksDataSource;
 import solidict.com.todoapp.data.source.local.ToDoDatabase;
+import solidict.com.todoapp.util.AppExecutors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,6 +21,8 @@ public class Injection {
 
         ToDoDatabase database = ToDoDatabase.getINSTANCE(context);
 
-        return TasksRepository.getINSTANCE(FakeTasksRemoteDataSource.getInstance(), );
+        return TasksRepository.getINSTANCE(FakeTasksRemoteDataSource.getInstance(),
+                LocalTasksDataSource.getInstance(new AppExecutors(),
+                        database.taskDao()));
     }
 }

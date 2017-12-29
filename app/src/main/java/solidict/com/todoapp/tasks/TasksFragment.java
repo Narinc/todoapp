@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 
 import solidict.com.todoapp.R;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment implements TasksContract.View{
+
+    private TasksContract.Presenter presenter;
 
     public static TasksFragment newInstance() {
 
@@ -35,4 +39,8 @@ public class TasksFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_tasks, container, false);
     }
 
+    @Override
+    public void setPresenter(TasksContract.Presenter presenter) {
+        presenter = checkNotNull(presenter);
+    }
 }
