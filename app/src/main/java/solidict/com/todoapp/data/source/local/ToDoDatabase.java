@@ -17,16 +17,15 @@ public abstract class ToDoDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
-    private static final Object lock = new Object();
+    private static final Object sLock = new Object();
 
-    public static ToDoDatabase getINSTANCE(Context context) {
-        synchronized (lock) {
-            if (context == null) {
+    public static ToDoDatabase getInstance(Context context) {
+        synchronized (sLock) {
+            if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         ToDoDatabase.class, "Tasks.db")
                         .build();
             }
-
             return INSTANCE;
         }
     }

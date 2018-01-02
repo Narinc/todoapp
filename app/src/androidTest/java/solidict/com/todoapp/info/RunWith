@@ -1,0 +1,15 @@
+@Retention(value=RUNTIME)
+@Target(value=TYPE)
+@Inherited
+public @interface RunWith
+
+When a class is annotated with @RunWith or extends a class annotated with @RunWith, JUnit will invoke the class it
+references to run the tests in that class instead of the runner built into JUnit. We added this feature late in
+development. While it seems powerful we expect the runner API to change as we learn how people really use it.
+Some of the classes that are currently internal will likely be refined and become public. For example,
+suites in JUnit 4 are built using RunWith, and a custom runner named Suite:
+
+ @RunWith(Suite.class)
+ @SuiteClasses(ATest.class, BTest.class, CTest.class)
+ public class ABCSuite {
+ }

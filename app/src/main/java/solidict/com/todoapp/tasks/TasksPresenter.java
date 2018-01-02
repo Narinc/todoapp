@@ -29,4 +29,9 @@ public class TasksPresenter implements TasksContract.Presenter {
     public void setFiltering(TasksFilterType currentFiltering) {
 
     }
+
+    @Override
+    public TasksFilterType getFiltering() {
+        return currentFilterType;
+    }
 }
