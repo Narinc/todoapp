@@ -3,9 +3,11 @@ package solidict.com.todoapp.tasks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -121,5 +123,10 @@ public class TasksActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountIdlingResource() {
+return EspressoIdlingResource
     }
 }
