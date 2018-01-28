@@ -6,4 +6,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_tasks_all">Yapılacak iş yok!</string>
+    <string name="no_tasks_add">Yeni bir yapılacak iş ekleyin +</string>
+    <string name="menu_filter">Filtrele</string>
+    <string name="menu_clear">Temizle</string>
+    <string name="refresh">Yenile</string>
+    <string name="nav_all">Hepsi</string>
+    <string name="nav_active">Aktif</string>
+    <string name="nav_completed">Tamamlanan</string>
 </resources>

@@ -22,6 +22,7 @@ import solidict.com.todoapp.Injection;
 import solidict.com.todoapp.R;
 import solidict.com.todoapp.statistics.StatisticsActivity;
 import solidict.com.todoapp.util.ActivityUtils;
+import solidict.com.todoapp.util.EspressoIdlingResource;
 
 public class TasksActivity extends AppCompatActivity {
 
@@ -127,6 +128,6 @@ public class TasksActivity extends AppCompatActivity {
 
     @VisibleForTesting
     public IdlingResource getCountIdlingResource() {
-return EspressoIdlingResource
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

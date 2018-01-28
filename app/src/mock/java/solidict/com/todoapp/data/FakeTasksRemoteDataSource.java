@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import solidict.com.todoapp.data.source.TasksDataSource;
-import solidict.com.todoapp.data.source.local.ToDoDatabase;
 
 /**
  * Created by volkannarinc on 28.12.2017 12:08.

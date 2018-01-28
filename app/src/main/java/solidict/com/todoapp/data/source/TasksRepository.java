@@ -3,7 +3,6 @@ package solidict.com.todoapp.data.source;
 import java.util.Map;
 
 import solidict.com.todoapp.data.Task;
-import solidict.com.todoapp.data.source.local.ToDoDatabase;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

@@ -20,9 +20,8 @@ public class Injection {
         checkNotNull(context);
 
         ToDoDatabase database = ToDoDatabase.getInstance(context);
-
         return TasksRepository.getINSTANCE(FakeTasksRemoteDataSource.getInstance(),
                 TasksLocalDataSource.getInstance(new AppExecutors(),
-                        database.taskDao()));
+                        database.tasksDao()));
     }
 }

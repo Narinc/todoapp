@@ -1,7 +1,5 @@
 package solidict.com.todoapp.tasks;
 
-import java.io.Serializable;
-
 import solidict.com.todoapp.BasePresenter;
 import solidict.com.todoapp.BaseView;
 
@@ -12,6 +10,7 @@ import solidict.com.todoapp.BaseView;
 public interface TasksContract {
 
     interface View extends BaseView<Presenter> {
+        void showFilteringPopUpMenu();
 
     }
 
@@ -20,5 +19,6 @@ public interface TasksContract {
         void setFiltering(TasksFilterType currentFiltering);
 
         TasksFilterType getFiltering();
+
     }
 }
