@@ -1,6 +1,7 @@
 package solidict.com.todoapp.tasks;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,10 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import solidict.com.todoapp.R;
 import solidict.com.todoapp.data.Task;
@@ -68,30 +69,26 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         return new TasksFragment();
     }
 
-    /**
-     * Listener for clicks on tasks in the ListView.
-     */
-    TaskItemListener taskItemListener = new TaskItemListener() {
-        @Override
-        public void onTaskClick(Task clickedTask) {
-            //mPresenter.openTaskDetails(clickedTask);
-        }
-
-        @Override
-        public void onCompleteTaskClick(Task completedTask) {
-            //mPresenter.completeTask(completedTask);
-        }
-
-        @Override
-        public void onActivateTaskClick(Task activatedTask) {
-            //mPresenter.activateTask(activatedTask);
-        }
-    };
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tasksAdapter = new TasksAdapter(new ArrayList<Task>(0), taskItemListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start();
+    }
+
+    @Override
+    public void setPresenter(TasksContract.Presenter presenter) {
+        presenter = checkNotNull(presenter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        presenter.result(requestCode, resultCode);
     }
 
     @Override
@@ -109,7 +106,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                presenter.addNewTask();
             }
         });
 
@@ -122,10 +119,11 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                presenter.loadTasks(false);
             }
         });
 
+        setHasOptionsMenu(true);
         return root;
     }
 
@@ -133,13 +131,13 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_clear:
-                //mPresenter.clearCompletedTasks();
+                presenter.clearCompletedTasks();
                 break;
             case R.id.menu_filter:
-                //showFilteringPopUpMenu();
+                showFilteringPopUpMenu();
                 break;
             case R.id.menu_refresh:
-                //mPresenter.loadTasks(true);
+                presenter.loadTasks(true);
                 break;
         }
         return true;
@@ -150,21 +148,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         inflater.inflate(R.menu.tasks_fragment_menu, menu);
     }
 
-    @Override
-    public void setPresenter(TasksContract.Presenter presenter) {
-        presenter = checkNotNull(presenter);
-    }
-
-    @OnClick(R.id.noTasksAdd)
-    void showAddTask() {
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void showFilteringPopUpMenu() {
@@ -175,20 +158,159 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.active:
-                        //mPresenter.setFiltering(TasksFilterType.ACTIVE_TASKS);
+                        presenter.setFiltering(TasksFilterType.ACTIVE_TASKS);
                         break;
                     case R.id.completed:
-                        //mPresenter.setFiltering(TasksFilterType.COMPLETED_TASKS);
+                        presenter.setFiltering(TasksFilterType.COMPLETED_TASKS);
                         break;
                     default:
-                        //mPresenter.setFiltering(TasksFilterType.ALL_TASKS);
+                        presenter.setFiltering(TasksFilterType.ALL_TASKS);
                         break;
                 }
-                //mPresenter.loadTasks(false);
+                presenter.loadTasks(false);
                 return true;
             }
         });
 
         popup.show();
+    }
+
+    /**
+     * Listener for clicks on tasks in the ListView.
+     */
+    TaskItemListener taskItemListener = new TaskItemListener() {
+        @Override
+        public void onTaskClick(Task clickedTask) {
+            presenter.openTaskDetails(clickedTask);
+        }
+
+        @Override
+        public void onCompleteTaskClick(Task completedTask) {
+            presenter.completeTask(completedTask);
+        }
+
+        @Override
+        public void onActivateTaskClick(Task activatedTask) {
+            presenter.activateTask(activatedTask);
+        }
+    };
+/*    @OnClick(R.id.noTasksAdd)
+    void showAddTask() {
+
+    }*/
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void setLoadingIndicator(final boolean active) {
+        if (getView() == null) {
+            return;
+        }
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(active);
+            }
+        });
+    }
+
+    @Override
+    public void showTasks(List<Task> tasks) {
+        tasksAdapter.replaceData(tasks);
+
+        llTasks.setVisibility(View.VISIBLE);
+        noTasks.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void showNoActiveTasks() {
+        showNoTasksViews(
+                getResources().getString(R.string.no_tasks_active),
+                R.drawable.ic_check_circle_24dp,
+                false
+        );
+    }
+
+    @Override
+    public void showNoTasks() {
+        showNoTasksViews(
+                getResources().getString(R.string.no_tasks_all),
+                R.drawable.ic_assignment_turned_in_24dp,
+                false
+        );
+    }
+
+    private void showNoTasksViews(String mainText, int iconRes, boolean showAddView) {
+        llTasks.setVisibility(View.GONE);
+        noTasks.setVisibility(View.VISIBLE);
+
+        noTasksMain.setText(mainText);
+        noTasksIcon.setImageDrawable(getResources().getDrawable(iconRes));
+        noTasksAdd.setVisibility(showAddView ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void showAddTask() {
+
+    }
+
+    @Override
+    public void showTaskDetailsUi(String taskId) {
+
+    }
+
+    @Override
+    public void showTaskMarkedComplete() {
+
+    }
+
+    @Override
+    public void showTaskMarkedActive() {
+
+    }
+
+    @Override
+    public void showCompletedTasksCleared() {
+
+    }
+
+    @Override
+    public void showLoadingTasksError() {
+
+    }
+
+    @Override
+    public void showActiveFilterLabel() {
+
+    }
+
+    @Override
+    public void showCompletedFilterLabel() {
+
+    }
+
+    @Override
+    public void showAllFilterLabel() {
+
+    }
+
+    @Override
+    public void showNoCompletedTasks() {
+
+    }
+
+    @Override
+    public void showSuccessfullySavedMessage() {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
     }
 }
