@@ -123,9 +123,12 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     private void processTasks(List<Task> tasks) {
         if (tasks.isEmpty()) {
+            // İlgili filtre tipi ile ilgili yapılacak olmadığını göster
             processEmptyTasks();
         } else {
+            // Yapılacaklar listesini göster
             tasksView.showTasks(tasks);
+            // Filtre tipi yazısını belirle
             showFilterLabel();
         }
     }

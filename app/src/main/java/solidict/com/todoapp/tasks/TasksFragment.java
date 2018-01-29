@@ -83,7 +83,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void setPresenter(TasksContract.Presenter presenter) {
-        presenter = checkNotNull(presenter);
+        this.presenter = checkNotNull(presenter);
     }
 
     @Override

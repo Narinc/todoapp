@@ -2,6 +2,8 @@ package solidict.com.todoapp.data;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.collect.Lists;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class FakeTasksRemoteDataSource implements TasksDataSource {
 
     @Override
     public void getTasks(@NonNull LoadTasksCallback callback) {
-
+        callback.onTasksLoaded(Lists.<Task>newArrayList(TASKS_SERVICE_DATA.values()));
     }
 
     @Override

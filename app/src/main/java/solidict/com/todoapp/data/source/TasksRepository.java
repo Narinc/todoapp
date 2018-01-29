@@ -2,6 +2,9 @@ package solidict.com.todoapp.data.source;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import solidict.com.todoapp.data.Task;
@@ -40,8 +43,67 @@ public class TasksRepository implements TasksDataSource {
     }
 
     @Override
-    public void getTasks(@NonNull LoadTasksCallback callback) {
+    public void getTasks(@NonNull final LoadTasksCallback callback) {
+        checkNotNull(callback);
 
+        // Respond immediately with cache if available and not dirty
+        if (cachedTasks != null && !cacheIsDirty) {
+            callback.onTasksLoaded(new ArrayList<Task>(cachedTasks.values()));
+        }
+
+        if (cacheIsDirty) {
+            // If the cache is dirty we need to fetch new data from the network.
+            getTasksFromRemoteDataSource(callback);
+        } else {
+            // Query the local storage if available. If not, query the network.
+            localTasksDataSource.getTasks(new LoadTasksCallback() {
+                @Override
+                public void onTasksLoaded(List<Task> tasks) {
+                    refreshCache(tasks);
+                    //Artık önbellekteki yapılacak işler güncellendi.
+                    callback.onTasksLoaded(new ArrayList<Task>(cachedTasks.values()));
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    getTasksFromRemoteDataSource(callback);
+                }
+            });
+        }
+    }
+
+    private void refreshCache(List<Task> tasks) {
+        if (cachedTasks == null) {
+            cachedTasks = new LinkedHashMap<>();
+        }
+        cachedTasks.clear();
+        for (Task task : tasks) {
+            cachedTasks.put(task.getId(), task);
+        }
+        cacheIsDirty = false;
+    }
+
+    private void getTasksFromRemoteDataSource(final LoadTasksCallback callback) {
+        remoteTasksDataSource.getTasks(new LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                refreshCache(tasks);
+                refreshLocalDataSource(tasks);
+                callback.onTasksLoaded(new ArrayList<Task>(cachedTasks.values()));
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    private void refreshLocalDataSource(List<Task> tasks) {
+        localTasksDataSource.deleteAllTasks();
+        for (Task task : tasks) {
+            localTasksDataSource.saveTask(task);
+        }
     }
 
     @Override
