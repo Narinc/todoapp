@@ -15,4 +15,15 @@
     <string name="nav_active">Aktif</string>
     <string name="nav_completed">Tamamlanan</string>
     <string name="no_tasks_active">Aktif işiniz bulunmamaktadır.</string>
+    <string name="task_marked_complete">Yapılacak iş tamamlandı.</string>
+    <string name="task_marked_active">Yapılacak iş aktifleştirildi.</string>
+    <string name="completed_tasks_cleared">Tamamlanan yapılacaklar temizlendi.</string>
+    <string name="loading_tasks_error">Yapılacak iş yüklenirken hata oluştu.</string>
+    <string name="label_active">Aktif İşler</string>
+    <string name="label_completed">İş tamamlandı.</string>
+    <string name="label_all">Tüm İşler</string>
+    <string name="successfully_saved_task_message">Yapılacak iş kaydedildi.</string>
+    <string name="no_tasks_completed">Tamamlanan işiniz bulunmamaktadır.</string>
+    <string name="add_task">Yeni İş Ekle</string>
+    <string name="edit_task">İş Düzenle</string>
 </resources>

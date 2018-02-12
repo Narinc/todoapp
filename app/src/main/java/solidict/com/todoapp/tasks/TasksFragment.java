@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import solidict.com.todoapp.R;
+import solidict.com.todoapp.addedittask.AddEditTaskActivity;
 import solidict.com.todoapp.data.Task;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -256,61 +258,74 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showAddTask() {
-
+        Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
+        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
     }
 
     @Override
     public void showTaskDetailsUi(String taskId) {
-
+        // in it's own Activity, since it makes more sense that way and it gives us the flexibility
+        // to show some Intent stubbing.
+        //Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        //intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
+        //startActivity(intent);
     }
 
     @Override
     public void showTaskMarkedComplete() {
-
+        showMessage(getString(R.string.task_marked_complete));
     }
 
     @Override
     public void showTaskMarkedActive() {
-
+        showMessage(getString(R.string.task_marked_active));
     }
 
     @Override
     public void showCompletedTasksCleared() {
-
+        showMessage(getString(R.string.completed_tasks_cleared));
     }
 
     @Override
     public void showLoadingTasksError() {
-
+        showMessage(getString(R.string.loading_tasks_error));
     }
 
     @Override
     public void showActiveFilterLabel() {
-
+        filteringLabel.setText(getResources().getString(R.string.label_active));
     }
 
     @Override
     public void showCompletedFilterLabel() {
-
+        filteringLabel.setText(getResources().getString(R.string.label_completed));
     }
 
     @Override
     public void showAllFilterLabel() {
-
+        filteringLabel.setText(getResources().getString(R.string.label_all));
     }
 
     @Override
     public void showNoCompletedTasks() {
-
+        showNoTasksViews(
+                getResources().getString(R.string.no_tasks_completed),
+                R.drawable.ic_verified_user_24dp,
+                false
+        );
     }
 
     @Override
     public void showSuccessfullySavedMessage() {
-
+        showMessage(getString(R.string.successfully_saved_task_message));
     }
 
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    private void showMessage(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
     }
 }
