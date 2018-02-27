@@ -2,8 +2,10 @@ package solidict.com.todoapp.addedittask;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
     public static final int REQUEST_ADD_TASK = 1;
     public static final String SHOULD_LOAD_DATA_FROM_REPO_KEY = "SHOULD_LOAD_DATA_FROM_REPO_KEY";
 
-    private AddEditTaskPresenter mAddEditTaskPresenter;
+    private AddEditTaskPresenter presenter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -68,7 +70,9 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
         boolean shouldLoadDataFromRepo = true;
 
+        //Yapılandırma değişikliği ise sunum yapan kişinin depodan veri yüklemesini önleyin.
         if (savedInstanceState != null) {
+            //Yapılandırma değişikliği olduğunda veri yüklü olmayabilir, bu nedenle durumu kaydettik.
             shouldLoadDataFromRepo = savedInstanceState.getBoolean(SHOULD_LOAD_DATA_FROM_REPO_KEY);
         }
     }
@@ -80,4 +84,24 @@ public class AddEditTaskActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.edit_task);
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save the state so that next time we know if we need to refresh data.
+        outState.putBoolean(SHOULD_LOAD_DATA_FROM_REPO_KEY, presenter.isDataMissing());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // TODO: 27.02.2018 bu method nedir?
+        onBackPressed();
+        return true;
+    }
+
+//    @VisibleForTesting
+//    public IdlingResource getCountingIdlingResource() {
+//        return EspressoIdlingResource.getIdlingResource();
+//    }
 }
+
