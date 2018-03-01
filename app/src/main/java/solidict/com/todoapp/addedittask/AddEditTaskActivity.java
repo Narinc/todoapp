@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import solidict.com.todoapp.Injection;
 import solidict.com.todoapp.R;
 import solidict.com.todoapp.util.ActivityUtils;
 
@@ -75,6 +76,9 @@ public class AddEditTaskActivity extends AppCompatActivity {
             //Yapılandırma değişikliği olduğunda veri yüklü olmayabilir, bu nedenle durumu kaydettik.
             shouldLoadDataFromRepo = savedInstanceState.getBoolean(SHOULD_LOAD_DATA_FROM_REPO_KEY);
         }
+
+        presenter = new AddEditTaskPresenter(Injection.provideTasksRepository(getApplicationContext()),
+                addEditTaskFragment, taskId, shouldLoadDataFromRepo);
     }
 
     private void setToolbarTitle(@Nullable String taskId) {

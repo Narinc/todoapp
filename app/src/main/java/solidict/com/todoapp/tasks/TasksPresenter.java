@@ -1,10 +1,12 @@
 package solidict.com.todoapp.tasks;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import solidict.com.todoapp.addedittask.AddEditTaskActivity;
 import solidict.com.todoapp.data.Task;
 import solidict.com.todoapp.data.source.TasksDataSource;
 import solidict.com.todoapp.data.source.TasksRepository;
@@ -40,7 +42,10 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void result(int requestCode, int resultCode) {
-        // TODO: 28.01.2018
+        // Başarılı bir şekilde iş eklenmişse snackbar göster
+        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
+            tasksView.showSuccessfullySavedMessage();
+        }
     }
 
     @Override
@@ -164,7 +169,7 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void addNewTask() {
-
+        tasksView.showAddTask();
     }
 
     @Override
@@ -189,11 +194,11 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void setFiltering(TasksFilterType requestType) {
-
+        currentFilterType = requestType;
     }
 
     @Override
     public TasksFilterType getFiltering() {
-        return null;
+        return currentFilterType;
     }
 }

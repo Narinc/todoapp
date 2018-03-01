@@ -101,6 +101,12 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         unbinder = ButterKnife.bind(this, root);
 
         tasksList.setAdapter(tasksAdapter);
+        noTasksAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddTask();
+            }
+        });
 
         FloatingActionButton fab =
                 getActivity().findViewById(R.id.fab_add_task);
@@ -322,7 +328,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public boolean isActive() {
-        return false;
+        return isAdded();
     }
 
     private void showMessage(String message) {
