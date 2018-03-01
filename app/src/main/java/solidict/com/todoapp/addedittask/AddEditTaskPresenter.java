@@ -40,7 +40,7 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         this.taskId = taskId;
         this.isDataMissing = shouldLoadDataFromRepo;
 
-        view.setPresenter(this);
+        this.view.setPresenter(this);
     }
 
     @Override

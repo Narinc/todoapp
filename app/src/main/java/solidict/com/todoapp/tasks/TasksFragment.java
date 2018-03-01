@@ -31,6 +31,7 @@ import butterknife.Unbinder;
 import solidict.com.todoapp.R;
 import solidict.com.todoapp.addedittask.AddEditTaskActivity;
 import solidict.com.todoapp.data.Task;
+import solidict.com.todoapp.taskdetail.TaskDetailActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -202,10 +203,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             presenter.activateTask(activatedTask);
         }
     };
-/*    @OnClick(R.id.noTasksAdd)
-    void showAddTask() {
-
-    }*/
 
     @Override
     public void onDestroyView() {
@@ -272,9 +269,9 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     public void showTaskDetailsUi(String taskId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
-        //Intent intent = new Intent(getContext(), TaskDetailActivity.class);
-        //intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
-        //startActivity(intent);
+        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
+        startActivity(intent);
     }
 
     @Override

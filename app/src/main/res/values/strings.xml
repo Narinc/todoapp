@@ -29,4 +29,7 @@
     <string name="title_task_hint">Yapılacak İş</string>
     <string name="description_task_hint">İş detayını buraya yazınız.</string>
     <string name="empty_task_message">İş kısmı boş bırakılamaz.</string>
+    <string name="menu_delete_task">SİL</string>
+    <string name="loading">LOADING</string>
+    <string name="no_data">İş bulunamadı.</string>
 </resources>

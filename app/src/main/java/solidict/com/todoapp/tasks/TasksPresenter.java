@@ -32,7 +32,7 @@ public class TasksPresenter implements TasksContract.Presenter {
         this.tasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null");
         this.tasksView = checkNotNull(tasksView, "tasksView cannot be null!");
 
-        tasksView.setPresenter(this);
+        this.tasksView.setPresenter(this);
     }
 
     @Override
@@ -174,22 +174,31 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void openTaskDetails(@NonNull Task requestedTask) {
-
+        checkNotNull(requestedTask, "requestedTask cannot be null!");
+        tasksView.showTaskDetailsUi(requestedTask.getId());
     }
 
     @Override
     public void completeTask(@NonNull Task completedTask) {
-
+        checkNotNull(completedTask, "completedTask cannot be null!");
+        tasksRepository.completeTask(completedTask);
+        tasksView.showTaskMarkedComplete();
+        loadTasks(false, false);
     }
 
     @Override
     public void activateTask(@NonNull Task activeTask) {
-
+        checkNotNull(activeTask, "activeTask cannot be null!");
+        tasksRepository.activateTask(activeTask);
+        tasksView.showTaskMarkedActive();
+        loadTasks(false, false);
     }
 
     @Override
     public void clearCompletedTasks() {
-
+        tasksRepository.clearCompletedTasks();
+        tasksView.showCompletedTasksCleared();
+        loadTasks(false, false);
     }
 
     @Override
