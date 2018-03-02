@@ -44,4 +44,10 @@ public class TaskDetailActivity extends AppCompatActivity {
                 taskDetailFragment,
                 taskId);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

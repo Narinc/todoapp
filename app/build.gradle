@@ -13,6 +13,16 @@ android {
         flavorDimensions "default"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
+    signingConfigs {
+        general {
+            keyAlias 'general'
+            keyPassword 'general'
+            storeFile file('/Users/volkannarinc/Desktop/general')
+            storePassword 'general'
+        }
+    }
+
     buildTypes {
         debug {
             // Run code coverage reports by default on debug builds.
