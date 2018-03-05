@@ -32,4 +32,8 @@
     <string name="menu_delete_task">SİL</string>
     <string name="loading">LOADING</string>
     <string name="no_data">İş bulunamadı.</string>
+    <string name="statistics_no_tasks">Hiç iş yapılmamış.</string>
+    <string name="statistics_active_tasks">Aktif yapılan iş:</string>
+    <string name="statistics_completed_tasks">Tamalanan iş:</string>
+    <string name="statistics_error">İstatistikler yüklenirken hata oluştu.</string>
 </resources>

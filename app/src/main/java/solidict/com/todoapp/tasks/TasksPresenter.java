@@ -2,6 +2,7 @@ package solidict.com.todoapp.tasks;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;

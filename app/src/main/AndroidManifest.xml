@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="solidict.com.todoapp">
 
     <application
@@ -18,9 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".statistics.StatisticsActivity" />
+        <activity
+            android:name=".statistics.StatisticsActivity"
+            tools:ignore="UnusedAttribute"
+            android:parentActivityName=".tasks.TasksActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity" />
+        </activity>
         <activity android:name=".addedittask.AddEditTaskActivity" />
-        <activity android:name=".taskdetail.TaskDetailActivity"></activity>
+        <activity android:name=".taskdetail.TaskDetailActivity" />
     </application>
 
 </manifest>
